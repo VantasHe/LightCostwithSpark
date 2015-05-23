@@ -14,14 +14,16 @@ public class RWFile {
                 LightCostSpark.SpaceScale = Integer.parseInt(read.readLine());       //SpaceScale = The amount of lights
                 LightCostSpark.SpaceFitness = new double[LightCostSpark.SpaceScale][2];
                 int i = 0;
+                System.out.println("LightInstruction:");
                 while (read.ready())
                 {
                     String[] ReadBuffer = read.readLine().split(",");
                     LightCostSpark.SpaceFitness[i][0] = Double.parseDouble(ReadBuffer[0]);
                     LightCostSpark.SpaceFitness[i][1] = Double.parseDouble(ReadBuffer[1]);
-                    //System.out.print(PSO.SpaceFitness[i][0]+","+PSO.SpaceFitness[i][1]+"\n");
+                    System.out.println(LightCostSpark.SpaceFitness[i][0]+","+LightCostSpark.SpaceFitness[i][1]);
                     i++;
-                }// End While              
+                }// End While
+                System.out.println("======End of LightInstruction======");              
                 read.close();
             }
 
@@ -32,12 +34,14 @@ public class RWFile {
                 LightCostSpark.NumofBasicNeeds = Integer.parseInt(read.readLine());
                 LightCostSpark.BasicNeeds = new double[LightCostSpark.NumofBasicNeeds];
                 int i = 0;
+                System.out.println("Target:");
                 while (read.ready())
                 {
                     LightCostSpark.BasicNeeds[i] = Double.parseDouble(read.readLine());
-                    //System.out.print(PSO.BasicNeeds[i]+"\n");
+                    System.out.println(LightCostSpark.BasicNeeds[i]);
                     i++;
-                }// End While              
+                }// End While
+                System.out.println("======End of Target======");              
                 read.close();
             }
 
@@ -48,17 +52,19 @@ public class RWFile {
                 LightCostSpark.Dimension = Integer.parseInt(read.readLine());
                 LightCostSpark.FitnessParameter = new double[LightCostSpark.NumofBasicNeeds][LightCostSpark.SpaceScale];
                 int i = 0;
+                System.out.println("KParameter:");
                 while (read.ready())
                 {
                     String[] ReadBuffer = read.readLine().split(",");
                     for (int j = 0; j<LightCostSpark.Dimension; j++)
                     {
                         LightCostSpark.FitnessParameter[i][j] = Double.parseDouble(ReadBuffer[j]);
-                        //System.out.print(PSO.FitnessParameter[i][j]+",");
+                        System.out.print(LightCostSpark.FitnessParameter[i][j]+",");
                     }
                     i++;
                     //System.out.print("\n");
-                }// End While   
+                }// End While
+                System.out.println("======End of KParameter======");   
                 read.close();
             }
             //read file over
