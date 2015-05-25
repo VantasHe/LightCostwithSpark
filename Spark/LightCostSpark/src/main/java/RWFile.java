@@ -14,7 +14,7 @@ public class RWFile {
                 LightCostSpark.SpaceScale = Integer.parseInt(read.readLine());       //SpaceScale = The amount of lights
                 LightCostSpark.SpaceFitness = new double[LightCostSpark.SpaceScale][2];
                 int i = 0;
-                System.out.println("\n======LightInstruction:======\n");
+                System.out.println("LightInstruction:");
                 while (read.ready())
                 {
                     String[] ReadBuffer = read.readLine().split(",");
@@ -23,7 +23,7 @@ public class RWFile {
                     System.out.println(LightCostSpark.SpaceFitness[i][0]+","+LightCostSpark.SpaceFitness[i][1]);
                     i++;
                 }// End While
-                System.out.println("\n======End of LightInstruction======\n");              
+                System.out.println("======End of LightInstruction======");              
                 read.close();
             }
 
@@ -34,14 +34,14 @@ public class RWFile {
                 LightCostSpark.NumofBasicNeeds = Integer.parseInt(read.readLine());
                 LightCostSpark.BasicNeeds = new double[LightCostSpark.NumofBasicNeeds];
                 int i = 0;
-                System.out.println("\n======Target:======\n");
+                System.out.println("Target:");
                 while (read.ready())
                 {
                     LightCostSpark.BasicNeeds[i] = Double.parseDouble(read.readLine());
                     System.out.println(LightCostSpark.BasicNeeds[i]);
                     i++;
                 }// End While
-                System.out.println("\n======End of Target======\n");              
+                System.out.println("======End of Target======");              
                 read.close();
             }
 
@@ -52,7 +52,7 @@ public class RWFile {
                 LightCostSpark.Dimension = Integer.parseInt(read.readLine());
                 LightCostSpark.FitnessParameter = new double[LightCostSpark.NumofBasicNeeds][LightCostSpark.SpaceScale];
                 int i = 0;
-                System.out.println("\n======KParameter:======\n");
+                System.out.println("KParameter:");
                 while (read.ready())
                 {
                     String[] ReadBuffer = read.readLine().split(",");
@@ -64,7 +64,7 @@ public class RWFile {
                     i++;
                     //System.out.print("\n");
                 }// End While
-                System.out.println("\n======End of KParameter======\n");   
+                System.out.println("======End of KParameter======");   
                 read.close();
             }
             //read file over
