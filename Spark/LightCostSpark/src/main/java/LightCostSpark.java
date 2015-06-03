@@ -41,6 +41,91 @@ public class LightCostSpark {
 	static int NumofParticle = 100000;
 	static int numOfSlice = 4;
 
+	public String initializeParticle(String s) {
+		int _Dimension = Dimension;
+		int _SpaceScale = SpaceScale;
+		int _NumofBasicNeeds = NumofBasicNeeds;
+		int _VelocityLimit = VelocityLimit;
+		double[][] _SpaceFitness = SpaceFitness;
+
+		int[] RandomVelocity=new int [_Dimension];
+    	CheckT Checkt=new CheckT();
+    	RandomValue RandomNumber = new RandomValue();
+    	
+		int[] j=new int[_Dimension];
+		//Particle position random generate.
+		for(int h=0;h<_Dimension;h++)                                       
+	    {                                                                                                                                                    //cout<<StartPointCheck<<",";
+		   	j[h]=RandomNumber.RandomNumber(0,_SpaceScale-1);   
+	    }
+		//End of random generate.
+
+    	double Power = 0;
+
+	    for(int MatrixRow = 0;MatrixRow < _NumofBasicNeeds;MatrixRow++)
+	    {
+			int T=Checkt.CheckT(MatrixRow,j);
+			int PoN;	//Passive of Negitive,+1 or -1.
+	    	if(T==0)    //Reject，Power Set ImpossibleResume as initial value.
+		    {
+		    	for(int h=0;h<_Dimension;h++)
+	            {
+		    		if(RandomNumber.RandomNumber(0,1)==1)
+		    			PoN=1;
+		    		else
+		    			PoN=-1;
+		            RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
+	            }
+			    //particle = new Particle(j,ImpossibleResume,RandomVelocity);
+	   			for (int i = 0; i <_Dimension;i++){
+					s = s + Integer.toString(j[i]) + ",";
+	    		}
+	    		for (int i = 0; i <_Dimension;i++){
+					s = s + Integer.toString(RandomVelocity[i] + ",");
+	    		}
+	    		s = s + Double.toString(ImpossibleResume) + "\n";
+				
+				System.out.println(s);
+			    
+			    	return s;
+		    }
+		    else { T=0; }
+
+		    if(MatrixRow==_NumofBasicNeeds-1)	//全部Row都符合條件，開始計算耗能
+		    {                                          
+		        for(int k=0;k<_Dimension;k++)	//計算耗能
+	    	    { 
+		    	    Power +=_SpaceFitness[j[k]][0];          
+		        }                                                                     
+	    		for(int h=0;h<_Dimension;h++)	//隨機初始速度
+                {
+	    			if(RandomNumber.RandomNumber(0,1)==1)
+	    				PoN=1;
+	    			else
+	    				PoN=-1;
+	                RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
+                }                                                                                   
+                //particle =new Particle(j,Power,RandomVelocity);                //產生粒子
+                for (int i = 0; i <_Dimension;i++){
+					s = s + Integer.toString(j[i]) + ",";
+	    		}
+	    		for (int i = 0; i <_Dimension;i++){
+					s = s + Integer.toString(RandomVelocity[i] + ",");
+	    		}
+	    		s = s + Double.toString(Power) + "\n";
+				
+				System.out.println(s);
+                
+                Power=0;
+                
+                return s;
+		    }
+		}
+		String s = " ";
+		return s;
+
+	}
+
 	public static void main(String[] args) throws Exception{
 
 		//Initialize Spark driver and conference.
@@ -68,79 +153,8 @@ public class LightCostSpark {
     	data.map(new Function<Integer, String>(){
     		@Override
     		public String call(Integer particle){
-
-    			int _Dimension = Dimension;
-    			int _SpaceScale = SpaceScale;
-    			int _NumofBasicNeeds = NumofBasicNeeds;
-    			int _VelocityLimit = VelocityLimit;
-    			double[][] _SpaceFitness = SpaceFitness;
-
-    			int[] RandomVelocity=new int [_Dimension];
-		    	CheckT Checkt=new CheckT();
-		    	RandomValue RandomNumber = new RandomValue();
-		    	
-	    		int[] j=new int[_Dimension];
-	    		//Particle position random generate.
-	    		for(int h=0;h<_Dimension;h++)                                       
-	    	    {                                                                                                                                                    //cout<<StartPointCheck<<",";
-	    		   	j[h]=RandomNumber.RandomNumber(0,_SpaceScale-1);   
-	    	    }
-	    		//End of random generate.
-
-		    double Power = 0;
-
-	    	    for(int MatrixRow = 0;MatrixRow < _NumofBasicNeeds;MatrixRow++)
-	    	    {
-	    			int T=Checkt.CheckT(MatrixRow,j);
-	    			int PoN;	//Passive of Negitive,+1 or -1.
-	    	    	if(T==0)    //Reject，Power Set ImpossibleResume as initial value.
-	    		    {
-	    		    	for(int h=0;h<_Dimension;h++)
-	    	            {
-	    		    		if(RandomNumber.RandomNumber(0,1)==1)
-	    		    			PoN=1;
-	    		    		else
-	    		    			PoN=-1;
-	    		            RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
-	    	            }
-	    			    //particle = new Particle(j,ImpossibleResume,RandomVelocity);
-			   	 String s = "1";
-			   	 for (int i = 0; i <_Dimension;i++){
-				s = s + Integer.toString(j[i]);
-			    	}
-				System.out.println(s);
-	    			    return s;
-	    		    }
-	    		    else
-	    		    {
-	    			    T=0;
-	    		    }
-	    		    if(MatrixRow==_NumofBasicNeeds-1)	//全部Row都符合條件，開始計算耗能
-	    		    {                                          
-	    		        for(int k=0;k<_Dimension;k++)	//計算耗能
-    		    	    { 
-    			    	    Power +=_SpaceFitness[j[k]][0];          
-    			        }                                                                     
-    		    		for(int h=0;h<_Dimension;h++)	//隨機初始速度
-    	                {
-    		    			if(RandomNumber.RandomNumber(0,1)==1)
-    		    				PoN=1;
-    		    			else
-    		    				PoN=-1;
-    		                RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
-    	                }                                                                                   
-                        //particle =new Particle(j,Power,RandomVelocity);                //產生粒子
-                        Power=0;
-			String s = "1";
-			for (int i = 0; i <_Dimension;i++){
-				s = s + Integer.toString(j[i]);
-			}
-			System.out.println(s);
-                        return s;
-	    		    }
-	    		}
-			String s = " ";
-			return s;
+    			String s = "";
+    			return initializeParticle(s);
     		}
     	}).cache().saveAsTextFile("Particle.txt");
 /*
