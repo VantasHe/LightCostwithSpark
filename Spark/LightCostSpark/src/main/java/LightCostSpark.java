@@ -38,95 +38,87 @@ public class LightCostSpark {
 	static double InitialCTwo = 1;			//Coefficient C of Group, ascending. Because emphasize Group in later searching.
 	static double FinalCTwo = 2.5;
 
-	static int NumofParticle = 100000;
+	static int NumofParticle = 10000;
 	static int numOfSlice = 4;
 
-	public String initializeParticle(String s) {
+	static public String initializeParticle(String s) {
 		int _Dimension = Dimension;
 		int _SpaceScale = SpaceScale;
 		int _NumofBasicNeeds = NumofBasicNeeds;
 		int _VelocityLimit = VelocityLimit;
 		double[][] _SpaceFitness = SpaceFitness;
 
-		int[] RandomVelocity=new int [_Dimension];
-    	CheckT Checkt=new CheckT();
+		int[] RandomVelocity= new int [_Dimension];
+    	CheckT Checkt= new CheckT();
     	RandomValue RandomNumber = new RandomValue();
     	
 		int[] j=new int[_Dimension];
 		//Particle position random generate.
-		for(int h=0;h<_Dimension;h++)                                       
-	    {                                                                                                                                                    //cout<<StartPointCheck<<",";
-		   	j[h]=RandomNumber.RandomNumber(0,_SpaceScale-1);   
+		for(int h=0;h<_Dimension;h++) {                                                                                                                                                    //cout<<StartPointCheck<<",";
+			j[h]=RandomNumber.RandomNumber(0,_SpaceScale-1);   
 	    }
 		//End of random generate.
 
     	double Power = 0;
 
-	    for(int MatrixRow = 0;MatrixRow < _NumofBasicNeeds;MatrixRow++)
-	    {
+		for(int MatrixRow = 0;MatrixRow < _NumofBasicNeeds;MatrixRow++) {
 			int T=Checkt.CheckT(MatrixRow,j);
 			int PoN;	//Passive of Negitive,+1 or -1.
 	    	if(T==0)    //Reject，Power Set ImpossibleResume as initial value.
-		    {
-		    	for(int h=0;h<_Dimension;h++)
-	            {
-		    		if(RandomNumber.RandomNumber(0,1)==1)
-		    			PoN=1;
+			{
+				for(int h=0;h<_Dimension;h++) {
+					if(RandomNumber.RandomNumber(0,1)==1)
+						PoN=1;
 		    		else
 		    			PoN=-1;
-		            RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
-	            }
-			    //particle = new Particle(j,ImpossibleResume,RandomVelocity);
+					RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
+	       		}
+				//particle = new Particle(j,ImpossibleResume,RandomVelocity);
 	   			for (int i = 0; i <_Dimension;i++){
 					s = s + Integer.toString(j[i]) + ",";
 	    		}
 	    		for (int i = 0; i <_Dimension;i++){
-					s = s + Integer.toString(RandomVelocity[i] + ",");
+					s = s + Integer.toString(RandomVelocity[i])  + ",";
 	    		}
 	    		s = s + Double.toString(ImpossibleResume) + "\n";
 				
-				System.out.println(s);
+				//System.out.println(s);
 			    
-			    	return s;
-		    }
-		    else { T=0; }
+				return s;
+			}
+			else { T=0; }
 
-		    if(MatrixRow==_NumofBasicNeeds-1)	//全部Row都符合條件，開始計算耗能
-		    {                                          
-		        for(int k=0;k<_Dimension;k++)	//計算耗能
-	    	    { 
-		    	    Power +=_SpaceFitness[j[k]][0];          
-		        }                                                                     
-	    		for(int h=0;h<_Dimension;h++)	//隨機初始速度
-                {
+			if(MatrixRow==_NumofBasicNeeds-1) {	//全部Row都符合條件，開始計算耗能
+				for(int k=0;k<_Dimension;k++) {	//計算耗能
+					Power +=_SpaceFitness[j[k]][0];          
+				}                                                                     
+	    		for(int h=0;h<_Dimension;h++) {	//隨機初始速度
 	    			if(RandomNumber.RandomNumber(0,1)==1)
 	    				PoN=1;
 	    			else
 	    				PoN=-1;
-	                RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
-                }                                                                                   
-                //particle =new Particle(j,Power,RandomVelocity);                //產生粒子
-                for (int i = 0; i <_Dimension;i++){
+	           		RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
+	    		}                                                                                   
+	    		//particle =new Particle(j,Power,RandomVelocity);                //產生粒子
+            	for (int i = 0; i <_Dimension;i++){
 					s = s + Integer.toString(j[i]) + ",";
 	    		}
 	    		for (int i = 0; i <_Dimension;i++){
-					s = s + Integer.toString(RandomVelocity[i] + ",");
+					s = s + Integer.toString(RandomVelocity[i])  + ",";
 	    		}
 	    		s = s + Double.toString(Power) + "\n";
-				
-				System.out.println(s);
+				//System.out.println(s);
+				Power=0;
                 
-                Power=0;
-                
-                return s;
-		    }
+            	return s;
+			}
 		}
-		String s = " ";
+		s = " ";
 		return s;
 
 	}
 
-	public String getGbest(String p1, String p2)
+	static public String getGbest(String p1, String p2)
 	{
 		int _Dimension = Dimension;
 		int _SpaceScale = SpaceScale;
@@ -172,28 +164,26 @@ public class LightCostSpark {
 
     	CircleofPSO=(int) ((int)NumofParticle*(0.02));
     	if(CircleofPSO<10)   //Iterative loop too less may cause bad solution.
-    	    CircleofPSO=10;
+    		CircleofPSO=10;
     	VelocityLimit=(int) ((int)SpaceScale*(0.4));  //Velocity Limit is SpaceScale*40%
     	if(VelocityLimit<3)   //Velocity Limit too strick may cause fixed particle.
     		VelocityLimit=3; 
 
     	//=================================Section of Executor.==================================
     	List<Integer> particle = new ArrayList<Integer>(NumofParticle);
-    	JavaRDD<Integer> data = ctx.parallelize(particle, numOfSlice);
+    	JavaRDD<Integer> data = ctx.parallelize(particle);
 
     	//initialize
-    	JavaRDD<String> PSOparticles = data.map(new Function<Integer, String>(){
+    	String Gbest = data.map(new Function<Integer, String>(){
     		@Override
-    		public String call(Integer particle){
+    		public String call(Integer p){
     			String s = "";
     			return initializeParticle(s);
     		}
-    	}).collect();
-
-    	String Gbest = PSOparticles.reduce(new Function2<String, String, String>(){
+    	}).reduce(new Function2<String, String, String>(){
     		@Override
     		public String call(String particle1, String particle2){
-    			return getGbest(String, String);
+    			return getGbest(particle1, particle2);
     		}
     	});
 
@@ -205,7 +195,6 @@ public class LightCostSpark {
     	JavaRDD<Particle> Gbest = dataset.mapPartition(new Function<Particle, Particle>(){
     		@Override
     		public Particle call(Particle particle){
-
     		}
     	}).reduce(new Function2<Particle, Particle, Particle>(){
     		@Override
