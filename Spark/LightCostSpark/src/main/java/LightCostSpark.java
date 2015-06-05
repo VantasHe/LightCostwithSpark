@@ -49,38 +49,38 @@ public class LightCostSpark {
 		double[][] _SpaceFitness = SpaceFitness;
 
 		int[] RandomVelocity= new int [_Dimension];
-    	CheckT Checkt= new CheckT();
-    	RandomValue RandomNumber = new RandomValue();
+		CheckT Checkt= new CheckT();
+		RandomValue RandomNumber = new RandomValue();
     	
 		int[] j=new int[_Dimension];
 		//Particle position random generate.
 		for(int h=0;h<_Dimension;h++) {                                                                                                                                                    //cout<<StartPointCheck<<",";
 			j[h]=RandomNumber.RandomNumber(0,_SpaceScale-1);   
-	    }
+		}
 		//End of random generate.
 
-    	double Power = 0;
+		double Power = 0;
 
 		for(int MatrixRow = 0;MatrixRow < _NumofBasicNeeds;MatrixRow++) {
 			int T=Checkt.CheckT(MatrixRow,j);
 			int PoN;	//Passive of Negitive,+1 or -1.
-	    	if(T==0)    //Reject，Power Set ImpossibleResume as initial value.
+			if(T==0)    //Reject，Power Set ImpossibleResume as initial value.
 			{
 				for(int h=0;h<_Dimension;h++) {
 					if(RandomNumber.RandomNumber(0,1)==1)
 						PoN=1;
-		    		else
-		    			PoN=-1;
+					else
+						PoN=-1;
 					RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
-	       		}
+				}
 				//particle = new Particle(j,ImpossibleResume,RandomVelocity);
-	   			for (int i = 0; i <_Dimension;i++){
+				for (int i = 0; i <_Dimension;i++){
 					s = s + Integer.toString(j[i]) + ",";
-	    		}
-	    		for (int i = 0; i <_Dimension;i++){
+				}
+				for (int i = 0; i <_Dimension;i++){
 					s = s + Integer.toString(RandomVelocity[i])  + ",";
-	    		}
-	    		s = s + Double.toString(ImpossibleResume) + "\n";
+				}
+				s = s + Double.toString(ImpossibleResume) + "\n";
 				
 				//System.out.println(s);
 			    
@@ -92,25 +92,25 @@ public class LightCostSpark {
 				for(int k=0;k<_Dimension;k++) {	//計算耗能
 					Power +=_SpaceFitness[j[k]][0];          
 				}                                                                     
-	    		for(int h=0;h<_Dimension;h++) {	//隨機初始速度
-	    			if(RandomNumber.RandomNumber(0,1)==1)
-	    				PoN=1;
-	    			else
-	    				PoN=-1;
-	           		RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
-	    		}                                                                                   
-	    		//particle =new Particle(j,Power,RandomVelocity);                //產生粒子
-            	for (int i = 0; i <_Dimension;i++){
+				for(int h=0;h<_Dimension;h++) {	//隨機初始速度
+					if(RandomNumber.RandomNumber(0,1)==1)
+						PoN=1;
+					else
+						PoN=-1;
+					RandomVelocity[h]=PoN*RandomNumber.RandomNumber(0,_VelocityLimit);
+				}                                                                                   
+				//particle =new Particle(j,Power,RandomVelocity);                //產生粒子
+				for (int i = 0; i <_Dimension;i++){
 					s = s + Integer.toString(j[i]) + ",";
-	    		}
-	    		for (int i = 0; i <_Dimension;i++){
+				}
+				for (int i = 0; i <_Dimension;i++){
 					s = s + Integer.toString(RandomVelocity[i])  + ",";
-	    		}
-	    		s = s + Double.toString(Power) + "\n";
+				}
+				s = s + Double.toString(Power) + "\n";
 				//System.out.println(s);
 				Power=0;
-                
-            	return s;
+
+				return s;
 			}
 		}
 		s = " ";
@@ -154,40 +154,40 @@ public class LightCostSpark {
 
 		//Initialize Spark driver and conference.
 		SparkConf sparkConf = new SparkConf().setAppName("LightCostSpark");
-    	JavaSparkContext ctx = new JavaSparkContext(sparkConf);
+		JavaSparkContext ctx = new JavaSparkContext(sparkConf);
 
 		//Loading Setting of project.
-    	RWFile File=new RWFile();								//Need RWFile.java
-    	File.ReadFile("//usr//lib//spark//work//LightInstruction.txt",1);	/**Readfile(Path,mode)	*/
-    	File.ReadFile("//usr//lib//spark//work//Td.txt",2);				/**						*/
-    	File.ReadFile("//usr//lib//spark//work//KParameter.txt",3);		/**						*/
+		RWFile File=new RWFile();								//Need RWFile.java
+		File.ReadFile("//usr//lib//spark//work//LightInstruction.txt",1);	/**Readfile(Path,mode)	*/
+		File.ReadFile("//usr//lib//spark//work//Td.txt",2);				/**						*/
+		File.ReadFile("//usr//lib//spark//work//KParameter.txt",3);		/**						*/
 
-    	CircleofPSO=(int) ((int)NumofParticle*(0.02));
-    	if(CircleofPSO<10)   //Iterative loop too less may cause bad solution.
-    		CircleofPSO=10;
-    	VelocityLimit=(int) ((int)SpaceScale*(0.4));  //Velocity Limit is SpaceScale*40%
-    	if(VelocityLimit<3)   //Velocity Limit too strick may cause fixed particle.
-    		VelocityLimit=3; 
+		CircleofPSO=(int) ((int)NumofParticle*(0.02));
+		if(CircleofPSO<10)   //Iterative loop too less may cause bad solution.
+			CircleofPSO=10;
+		VelocityLimit=(int) ((int)SpaceScale*(0.4));  //Velocity Limit is SpaceScale*40%
+		if(VelocityLimit<3)   //Velocity Limit too strick may cause fixed particle.
+			VelocityLimit=3; 
 
-    	//=================================Section of Executor.==================================
-    	List<Integer> particle = new ArrayList<Integer>(NumofParticle);
-    	JavaRDD<Integer> data = ctx.parallelize(particle);
+		//=================================Section of Executor.==================================
+		List<Integer> particle = new ArrayList<Integer>(NumofParticle);
+		JavaRDD<Integer> data = ctx.parallelize(particle);
 
-    	//initialize
-    	String Gbest = data.map(new Function<Integer, String>(){
-    		@Override
-    		public String call(Integer p){
-    			String s = "";
-    			return initializeParticle(s);
-    		}
-    	}).reduce(new Function2<String, String, String>(){
-    		@Override
-    		public String call(String particle1, String particle2){
-    			return getGbest(particle1, particle2);
-    		}
-    	});
+		//initialize
+		String Gbest = data.map(new Function<Integer, String>(){
+			@Override
+			public String call(Integer p){
+				String s = "";
+				return initializeParticle(s);
+			}
+		}).reduce(new Function2<String, String, String>(){
+			@Override
+			public String call(String particle1, String particle2){
+				return getGbest(particle1, particle2);
+			}
+		});
 
-    	System.out.println("Gbest = "+Gbest);
+		System.out.println("Gbest = "+Gbest);
 
 
 /*
@@ -206,7 +206,7 @@ public class LightCostSpark {
     	Broadcast<Particle> broadcastGbest = ctx.broadcast(Gbest);
     	//=================================End of Executor.==================================
 */
-    	//Driver end.
-    	ctx.stop();
+		//Driver end.
+		ctx.stop();
 	}
 }
