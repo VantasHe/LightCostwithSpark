@@ -126,6 +126,38 @@ public class LightCostSpark {
 
 	}
 
+	public String getGbest(String p1, String p2)
+	{
+		int _Dimension = Dimension;
+		int _SpaceScale = SpaceScale;
+		int _NumofBasicNeeds = NumofBasicNeeds;
+		int _VelocityLimit = VelocityLimit;
+		double[][] _SpaceFitness = SpaceFitness;
+
+		int[] particle1 = new int[_Dimension];
+		double power_1 = 0;
+		int[] particle2 = new int[_Dimension];
+		double power_2 = 0;
+
+		String[] particle1_info = p1.split(",");
+		String[] particle2_info = p2.split(",");
+/*
+		for (int i = 0; i < _Dimension ; i++) {
+			particle1[i] = Integer.parseInt(particle1_info[i]);
+			particle2[i] = Integer.parseInt(particle2_info[i]);
+		}
+*/
+		power_1 = Double.parseDouble(particle1_info[_Dimension*2]);
+		power_2 = Double.parseDouble(particle1_info[_Dimension*2]);
+
+		if (power_1 >= power_2) {
+			return p1;
+		}
+		else {
+			return p2;
+		}
+	}
+
 	public static void main(String[] args) throws Exception{
 
 		//Initialize Spark driver and conference.
@@ -150,13 +182,24 @@ public class LightCostSpark {
     	JavaRDD<Integer> data = ctx.parallelize(particle, numOfSlice);
 
     	//initialize
-    	data.map(new Function<Integer, String>(){
+    	JavaRDD<String> PSOparticles = data.map(new Function<Integer, String>(){
     		@Override
     		public String call(Integer particle){
     			String s = "";
     			return initializeParticle(s);
     		}
-    	}).cache().saveAsTextFile("Particle.txt");
+    	}).collect();
+
+    	String Gbest = PSOparticles.reduce(new Function2<String, String, String>(){
+    		@Override
+    		public String call(String particle1, String particle2){
+    			return getGbest(String, String);
+    		}
+    	});
+
+    	System.out.println("Gbest = "+Gbest);
+
+
 /*
     	//mapPartition:Update Gbest,and Generate pbest.; reduce:return Gbest.
     	JavaRDD<Particle> Gbest = dataset.mapPartition(new Function<Particle, Particle>(){
