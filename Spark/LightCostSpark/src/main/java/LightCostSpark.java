@@ -42,6 +42,7 @@ public class LightCostSpark {
 	static int numOfSlice = 4;
 
 	static public String initializeParticle(String s) {
+		
 		int _Dimension = Dimension;
 		int _SpaceScale = SpaceScale;
 		int _NumofBasicNeeds = NumofBasicNeeds;
@@ -150,7 +151,7 @@ public class LightCostSpark {
 		}
 	}
 
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 
 		//Initialize Spark driver and conference.
 		SparkConf sparkConf = new SparkConf().setAppName("LightCostSpark");
