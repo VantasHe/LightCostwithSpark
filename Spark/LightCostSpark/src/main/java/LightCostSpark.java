@@ -42,7 +42,7 @@ public class LightCostSpark {
 	static int numOfSlice = 4;
 
 	static public String initializeParticle(String s) {
-		
+
 		int _Dimension = Dimension;
 		int _SpaceScale = SpaceScale;
 		int _NumofBasicNeeds = NumofBasicNeeds;
@@ -168,8 +168,17 @@ public class LightCostSpark {
 			CircleofPSO=10;
 		VelocityLimit=(int) ((int)SpaceScale*(0.4));  //Velocity Limit is SpaceScale*40%
 		if(VelocityLimit<3)   //Velocity Limit too strick may cause fixed particle.
-			VelocityLimit=3; 
+			VelocityLimit=3;
 
+		System.out.println("=====================Test Initialize.========================");
+		int count = 0;
+		while (count < NumofParticle){
+			String s = "";
+			s = initializeParticle(s);
+			System.out.println(s);
+		}
+
+/*
 		//=================================Section of Executor.==================================
 		List<Integer> particle = new ArrayList<Integer>(NumofParticle);
 		JavaRDD<Integer> data = ctx.parallelize(particle);
@@ -189,6 +198,7 @@ public class LightCostSpark {
 		});
 
 		System.out.println("Gbest = "+Gbest);
+*/
 
 
 /*
