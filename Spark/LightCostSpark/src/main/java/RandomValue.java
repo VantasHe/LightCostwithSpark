@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class RandomValue {
 	int RandomNumber(int MinValue,int MaxValue)   //Both MinValue and MaxValue are included
 	{

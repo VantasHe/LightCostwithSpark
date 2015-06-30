@@ -1,6 +1,7 @@
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.Sparkfiles;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
@@ -41,7 +42,7 @@ public class LightCostSpark {
 	static int NumofParticle = 10000;
 	static int numOfSlice = 4;
 
-	static public String initializeParticle(String s) {
+	public String initializeParticle(String s) {
 
 		int _Dimension = Dimension;
 		int _SpaceScale = SpaceScale;
@@ -119,7 +120,7 @@ public class LightCostSpark {
 
 	}
 
-	static public String getGbest(String p1, String p2)
+	public String getGbest(String p1, String p2)
 	{
 		int _Dimension = Dimension;
 		int _SpaceScale = SpaceScale;
@@ -143,7 +144,7 @@ public class LightCostSpark {
 		power_1 = Double.parseDouble(particle1_info[_Dimension*2]);
 		power_2 = Double.parseDouble(particle1_info[_Dimension*2]);
 
-		if (power_1 >= power_2) {
+		if (power_1 <= power_2) {
 			return p1;
 		}
 		else {
@@ -169,7 +170,7 @@ public class LightCostSpark {
 		VelocityLimit=(int) ((int)SpaceScale*(0.4));  //Velocity Limit is SpaceScale*40%
 		if(VelocityLimit<3)   //Velocity Limit too strick may cause fixed particle.
 			VelocityLimit=3;
-
+/*
 		System.out.println("=====================Test Initialize.========================");
 		int count = 0;
 		while (count < NumofParticle){
@@ -177,8 +178,7 @@ public class LightCostSpark {
 			s = initializeParticle(s);
 			System.out.println(s);
 		}
-
-/*
+*/
 		//=================================Section of Executor.==================================
 		List<Integer> particle = new ArrayList<Integer>(NumofParticle);
 		JavaRDD<Integer> data = ctx.parallelize(particle);
@@ -197,8 +197,7 @@ public class LightCostSpark {
 			}
 		});
 
-		System.out.println("Gbest = "+Gbest);
-*/
+		System.out.println("Gbest = "+ Gbest );
 
 
 /*
